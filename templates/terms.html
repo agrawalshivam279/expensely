@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Terms and Conditions — Spendly{% endblock %}
+
+{% block head %}
+<style>
+    .terms-header {
+        padding: 4rem 2rem 2.5rem;
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .terms-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: var(--ink);
+        line-height: 1.15;
+        margin-bottom: 0.6rem;
+    }
+
+    .terms-date {
+        font-size: 0.85rem;
+        color: var(--ink-faint);
+    }
+
+    .terms-body {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 2rem 5rem;
+    }
+
+    .terms-card {
+        background: var(--paper-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .terms-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin-bottom: 0.6rem;
+    }
+
+    .terms-section p,
+    .terms-section ul {
+        font-size: 0.95rem;
+        color: var(--ink-muted);
+        line-height: 1.75;
+    }
+
+    .terms-section ul {
+        padding-left: 1.25rem;
+    }
+
+    .terms-section ul li {
+        margin-bottom: 0.35rem;
+    }
+
+    .terms-divider {
+        border: none;
+        border-top: 1px solid var(--border-soft);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="terms-header">
+    <h1>Terms and Conditions</h1>
+    <p class="terms-date">Last updated: May 2026</p>
+</div>
+
+<div class="terms-body">
+    <div class="terms-card">
+
+        <div class="terms-section">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using Spendly, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use the service.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>2. Use of Service</h2>
+            <p>Spendly is a personal expense tracking tool intended for individual, non-commercial use. You agree to:</p>
+            <ul>
+                <li>Provide accurate information when creating your account.</li>
+                <li>Keep your login credentials secure and not share them with others.</li>
+                <li>Use the service only for lawful purposes and in accordance with these terms.</li>
+                <li>Not attempt to disrupt, hack, or interfere with the service or its infrastructure.</li>
+            </ul>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>3. User Data</h2>
+            <p>All expense data you enter into Spendly is your own. We do not sell or share your personal financial data with third parties. You are responsible for the accuracy of the data you input. We reserve the right to delete accounts and associated data that violate these terms.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>4. Limitations of Liability</h2>
+            <p>Spendly is provided "as is" without warranties of any kind, express or implied. We do not guarantee that the service will be uninterrupted, error-free, or completely secure. In no event shall Spendly or its developers be liable for any indirect, incidental, or consequential damages arising from your use of the service.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>5. Changes to Terms</h2>
+            <p>We may update these Terms and Conditions from time to time. Continued use of the service after any changes constitutes your acceptance of the new terms. We encourage you to review this page periodically.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>6. Contact</h2>
+            <p>If you have any questions about these terms, please reach out through the contact information provided on the platform.</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
