@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block head %}
+<style>
+    .terms-header {
+        padding: 4rem 2rem 2.5rem;
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .terms-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: var(--ink);
+        line-height: 1.15;
+        margin-bottom: 0.6rem;
+    }
+
+    .terms-date {
+        font-size: 0.85rem;
+        color: var(--ink-faint);
+    }
+
+    .terms-body {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 2rem 5rem;
+    }
+
+    .terms-card {
+        background: var(--paper-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .terms-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin-bottom: 0.6rem;
+    }
+
+    .terms-section p,
+    .terms-section ul {
+        font-size: 0.95rem;
+        color: var(--ink-muted);
+        line-height: 1.75;
+    }
+
+    .terms-section ul {
+        padding-left: 1.25rem;
+    }
+
+    .terms-section ul li {
+        margin-bottom: 0.35rem;
+    }
+
+    .terms-divider {
+        border: none;
+        border-top: 1px solid var(--border-soft);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="terms-header">
+    <h1>Privacy Policy</h1>
+    <p class="terms-date">Last updated: May 2026</p>
+</div>
+
+<div class="terms-body">
+    <div class="terms-card">
+
+        <div class="terms-section">
+            <h2>1. Data We Collect</h2>
+            <p>When you use Spendly, we collect the following information:</p>
+            <ul>
+                <li>Account information: your name, email address, and password (stored securely as a hash).</li>
+                <li>Expense data: amounts, categories, dates, and descriptions you enter.</li>
+                <li>Usage data: basic logs such as login timestamps, used solely for security and debugging.</li>
+            </ul>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>2. How We Use Your Data</h2>
+            <p>We use the data we collect solely to provide and improve the Spendly service:</p>
+            <ul>
+                <li>To authenticate you and keep your account secure.</li>
+                <li>To display your expense history and generate spending summaries.</li>
+                <li>To diagnose errors and maintain service reliability.</li>
+            </ul>
+            <p>We do not use your data for advertising or sell it to any third party.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>3. Data Storage</h2>
+            <p>Your data is stored in a secured database. Passwords are never stored in plain text — they are hashed before being saved. We take reasonable technical measures to protect your data from unauthorized access, but no system is completely immune to security risks.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>4. Third Party Services</h2>
+            <p>Spendly does not share your personal data with third-party services. We use Google Fonts for typography, which may log your IP address as part of a standard font request — this is governed by Google's own privacy policy. No financial data is shared externally.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>5. Your Rights</h2>
+            <p>You have the right to access, correct, or delete the personal data we hold about you. You may delete your account at any time, which will permanently remove all associated data. To request data access or deletion, contact us using the details below.</p>
+        </div>
+
+        <hr class="terms-divider">
+
+        <div class="terms-section">
+            <h2>6. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy, please reach out through the contact information provided on the platform.</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
