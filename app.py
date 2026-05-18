@@ -1,5 +1,6 @@
+import sqlite3
 from flask import Flask, render_template, session, request, redirect
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from database.db import get_db, init_db, seed_db
 
 app = Flask(__name__)
@@ -21,15 +22,21 @@ def landing():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id"):
+        return redirect("/")
+
     if request.method == "GET":
         return render_template("register.html")
 
     name = request.form["name"]
     email = request.form["email"]
     password = request.form["password"]
+    confirm_password = request.form["confirm_password"]
 
     if len(password) < 8:
         return render_template("register.html", error="Password must be at least 8 characters")
+    if password != confirm_password:
+        return render_template("register.html", error="Passwords do not match")
 
     password_hash = generate_password_hash(password)
     db = get_db()
@@ -48,6 +55,9 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user_id"):
+        return redirect("/")
+
     if request.method == "GET":
         return render_template("login.html")
 
