@@ -1,9 +1,9 @@
-import sqlite3
-from flask import Flask, render_template, request, redirect
-from werkzeug.security import generate_password_hash
+from flask import Flask, render_template, session, request, redirect
+from werkzeug.security import check_password_hash
 from database.db import get_db, init_db, seed_db
 
 app = Flask(__name__)
+app.secret_key = "spendly-dev-secret"
 
 with app.app_context():
     init_db()
@@ -46,9 +46,23 @@ def register():
     return redirect("/login")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if request.method == "GET":
+        return render_template("login.html")
+
+    email = request.form["email"]
+    password = request.form["password"]
+
+    db = get_db()
+    user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+    db.close()
+
+    if user is None or not check_password_hash(user["password_hash"], password):
+        return render_template("login.html", error="Invalid email or password")
+
+    session["user_id"] = user["id"]
+    return redirect("/")
 
 
 # ------------------------------------------------------------------ #
@@ -67,7 +81,8 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    return redirect("/")
 
 
 @app.route("/profile")
