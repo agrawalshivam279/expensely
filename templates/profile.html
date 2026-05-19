@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — Spendly{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-inner">
+
+        <!-- User Info Card -->
+        <div class="profile-hero">
+            <div class="profile-avatar">{{ user.initials }}</div>
+            <div class="profile-user-info">
+                <h1 class="profile-name">{{ user.name }}</h1>
+                <p class="profile-email">{{ user.email }}</p>
+                <span class="profile-since">Member since {{ user.member_since }}</span>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="profile-stats">
+            <div class="profile-stat-card">
+                <div class="profile-stat-icon"><i data-lucide="credit-card"></i></div>
+                <div class="profile-stat-label">Total Spent</div>
+                <div class="profile-stat-value">{{ stats.total_spent }}</div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="profile-stat-icon"><i data-lucide="list"></i></div>
+                <div class="profile-stat-label">Transactions</div>
+                <div class="profile-stat-value">{{ stats.transaction_count }}</div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="profile-stat-icon"><i data-lucide="trending-up"></i></div>
+                <div class="profile-stat-label">Top Category</div>
+                <div class="profile-stat-value">{{ stats.top_category }}</div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="profile-section">
+            <div class="profile-section-header">
+                <i data-lucide="clock"></i>
+                <h2>Transaction History</h2>
+            </div>
+            <div class="profile-table-wrap">
+                <table class="profile-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th class="col-amount">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in transactions %}
+                        <tr>
+                            <td class="col-date">{{ t.date }}</td>
+                            <td>{{ t.description }}</td>
+                            <td>
+                                <span class="profile-badge badge-{{ t.category | lower | replace(' ', '-') }}">
+                                    {{ t.category }}
+                                </span>
+                            </td>
+                            <td class="col-amount">{{ t.amount }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="profile-section">
+            <div class="profile-section-header">
+                <i data-lucide="pie-chart"></i>
+                <h2>Category Breakdown</h2>
+            </div>
+            <div class="profile-bars">
+                {% for c in categories %}
+                <div class="profile-bar-row">
+                    <div class="profile-bar-name">{{ c.name }}</div>
+                    <div class="profile-bar-track">
+                        <div class="profile-bar-fill" data-percent="{{ c.percent }}"></div>
+                    </div>
+                    <div class="profile-bar-amount">{{ c.amount }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    lucide.createIcons();
+    document.querySelectorAll('.profile-bar-fill').forEach(function(el) {
+        el.style.width = el.dataset.percent + '%';
+    });
+</script>
+{% endblock %}
