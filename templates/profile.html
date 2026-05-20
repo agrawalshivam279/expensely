@@ -35,6 +35,36 @@
             </div>
         </div>
 
+        <!-- Date Filter Bar -->
+        <div class="profile-filter-bar">
+            <div class="profile-filter-presets">
+                <a href="{{ url_for('profile', **{'from': presets.this_month[0], 'to': presets.this_month[1]}) }}"
+                   class="filter-btn{% if active_preset == 'this_month' %} filter-btn--active{% endif %}">
+                    This Month
+                </a>
+                <a href="{{ url_for('profile', **{'from': presets.last_month[0], 'to': presets.last_month[1]}) }}"
+                   class="filter-btn{% if active_preset == 'last_month' %} filter-btn--active{% endif %}">
+                    Last Month
+                </a>
+                <a href="{{ url_for('profile', **{'from': presets.last_7_days[0], 'to': presets.last_7_days[1]}) }}"
+                   class="filter-btn{% if active_preset == 'last_7_days' %} filter-btn--active{% endif %}">
+                    Last 7 Days
+                </a>
+                <a href="{{ url_for('profile') }}"
+                   class="filter-btn{% if active_preset == 'all_time' %} filter-btn--active{% endif %}">
+                    All Time
+                </a>
+            </div>
+            <form class="profile-filter-custom" method="GET" action="{{ url_for('profile') }}">
+                <input type="date" name="from" class="form-input filter-date-input"
+                       value="{{ date_from or '' }}" aria-label="From date">
+                <span class="filter-sep">to</span>
+                <input type="date" name="to" class="form-input filter-date-input"
+                       value="{{ date_to or '' }}" aria-label="To date">
+                <button type="submit" class="btn-primary filter-apply-btn">Apply</button>
+            </form>
+        </div>
+
         <!-- Transaction History -->
         <div class="profile-section">
             <div class="profile-section-header">

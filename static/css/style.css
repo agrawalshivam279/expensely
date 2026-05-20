@@ -866,6 +866,68 @@ a { color: inherit; text-decoration: none; }
     font-variant-numeric: tabular-nums;
 }
 
+/* Date filter bar */
+.profile-filter-bar {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-filter-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    background: var(--paper-card);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filter-btn:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.filter-btn--active {
+    background: var(--accent);
+    color: var(--paper-card);
+    border-color: var(--accent);
+}
+
+.profile-filter-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-date-input {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    width: auto;
+}
+
+.filter-sep {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+}
+
+.filter-apply-btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+}
+
 /* Section wrapper */
 .profile-section {
     margin-top: 2.5rem;
