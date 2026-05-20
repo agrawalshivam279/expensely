@@ -1,4 +1,7 @@
 import sqlite3
+import re
+from datetime import date, timedelta
+from calendar import monthrange
 from flask import Flask, render_template, session, request, redirect, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from database.db import get_db, init_db, seed_db
@@ -101,19 +104,63 @@ def logout():
     return redirect("/")
 
 
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _parse_date_param(value):
+    if value and _DATE_RE.match(value):
+        return value
+    return None
+
+
+def _preset_ranges():
+    today = date.today()
+    first_this = today.replace(day=1)
+    last_this = today.replace(day=monthrange(today.year, today.month)[1])
+    prev_month = (first_this - timedelta(days=1))
+    first_prev = prev_month.replace(day=1)
+    last_prev = prev_month.replace(day=monthrange(prev_month.year, prev_month.month)[1])
+    return {
+        "this_month":  (first_this.isoformat(), last_this.isoformat()),
+        "last_month":  (first_prev.isoformat(), last_prev.isoformat()),
+        "last_7_days": ((today - timedelta(days=6)).isoformat(), today.isoformat()),
+    }
+
+
 @app.route("/profile")
 def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
+    date_from = _parse_date_param(request.args.get("from"))
+    date_to   = _parse_date_param(request.args.get("to"))
+
+    presets = _preset_ranges()
+    active_preset = None
+    for name, (pf, pt) in presets.items():
+        if date_from == pf and date_to == pt:
+            active_preset = name
+            break
+    if date_from is None and date_to is None:
+        active_preset = "all_time"
+
     user_id = session["user_id"]
     user = get_user_by_id(user_id)
-    stats = get_summary_stats(user_id)
-    transactions = get_recent_transactions(user_id)
-    categories = get_category_breakdown(user_id)
+    stats = get_summary_stats(user_id, date_from=date_from, date_to=date_to)
+    transactions = get_recent_transactions(user_id, date_from=date_from, date_to=date_to)
+    categories = get_category_breakdown(user_id, date_from=date_from, date_to=date_to)
 
-    return render_template("profile.html", user=user, stats=stats,
-                           transactions=transactions, categories=categories)
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        transactions=transactions,
+        categories=categories,
+        date_from=date_from,
+        date_to=date_to,
+        active_preset=active_preset,
+        presets=presets,
+    )
 
 
 @app.route("/expenses/add")
