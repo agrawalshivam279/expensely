@@ -112,3 +112,16 @@ def get_category_breakdown(user_id, date_from=None, date_to=None):
         return breakdown
     finally:
         db.close()
+
+
+def add_expense(user_id, amount, category, date, description):
+    db = get_db()
+    try:
+        db.execute(
+            "INSERT INTO expenses (user_id, amount, category, date, description)"
+            " VALUES (?, ?, ?, ?, ?)",
+            (user_id, amount, category, date, description or None),
+        )
+        db.commit()
+    finally:
+        db.close()
