@@ -295,6 +295,19 @@ a { color: inherit; text-decoration: none; }
     color: var(--ink);
 }
 
+.btn-danger {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+}
+.btn-danger:hover {
+    background: var(--danger);
+    color: var(--white);
+}
+
 /* ------------------------------------------------------------------ */
 /* Features section                                                    */
 /* ------------------------------------------------------------------ */
