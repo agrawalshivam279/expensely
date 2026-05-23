@@ -34,10 +34,13 @@ Good: "feat: add delete expense button with confirmation dialog"
 Bad: "feat: added DELETE route to app.py"
 
 ## Step 3 — Commit
+Stage all feature files and any updated `.claude/` files (specs, commands, settings):
 ```bash
 git add .
 git commit -m "<generated-message>"
 ```
+If `.claude/` files are present (specs, commands, etc.), include them in the same commit — do not create a separate commit for them.
+
 Report: "✓ Committed — <message>"
 
 ## Step 4 — Push to feature branch
