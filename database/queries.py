@@ -65,7 +65,7 @@ def get_recent_transactions(user_id, limit=10, date_from=None, date_to=None):
     try:
         date_sql, date_params = _date_clause(date_from, date_to)
         rows = db.execute(
-            f"SELECT date, description, category, amount "
+            f"SELECT id, date, description, category, amount "
             f"FROM expenses WHERE user_id = ?{date_sql} ORDER BY date DESC LIMIT ?",
             (user_id, *date_params, limit),
         ).fetchall()
@@ -73,6 +73,7 @@ def get_recent_transactions(user_id, limit=10, date_from=None, date_to=None):
         for row in rows:
             parsed = datetime.strptime(row["date"], "%Y-%m-%d")
             result.append({
+                "id": row["id"],
                 "date": f"{parsed.strftime('%b')} {parsed.day}",
                 "description": row["description"] or "",
                 "category": row["category"],
@@ -110,6 +111,31 @@ def get_category_breakdown(user_id, date_from=None, date_to=None):
         for item in breakdown:
             del item["_raw"]
         return breakdown
+    finally:
+        db.close()
+
+
+def get_expense_by_id(expense_id, user_id):
+    db = get_db()
+    try:
+        return db.execute(
+            "SELECT id, amount, category, date, description "
+            "FROM expenses WHERE id = ? AND user_id = ?",
+            (expense_id, user_id),
+        ).fetchone()
+    finally:
+        db.close()
+
+
+def update_expense(expense_id, user_id, amount, category, date, description):
+    db = get_db()
+    try:
+        db.execute(
+            "UPDATE expenses SET amount=?, category=?, date=?, description=? "
+            "WHERE id=? AND user_id=?",
+            (amount, category, date, description or None, expense_id, user_id),
+        )
+        db.commit()
     finally:
         db.close()
 

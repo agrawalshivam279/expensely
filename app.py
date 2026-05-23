@@ -2,7 +2,7 @@ import sqlite3
 import re
 from datetime import date, datetime, timedelta
 from calendar import monthrange
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from database.db import get_db, init_db, seed_db
 from database.queries import (
@@ -11,6 +11,8 @@ from database.queries import (
     get_recent_transactions,
     get_category_breakdown,
     add_expense as insert_expense,
+    get_expense_by_id,
+    update_expense,
 )
 
 CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
@@ -222,9 +224,58 @@ def add_expense():
     return redirect(url_for("profile"))
 
 
-@app.route("/expenses/<int:id>/edit")
+@app.route("/expenses/<int:id>/edit", methods=["GET", "POST"])
 def edit_expense(id):
-    return "Edit expense — coming in Step 8"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user_id = session["user_id"]
+    expense = get_expense_by_id(id, user_id)
+    if expense is None:
+        abort(404)
+
+    if request.method == "GET":
+        return render_template("edit_expense.html", categories=CATEGORIES, form=expense)
+
+    amount_raw  = request.form.get("amount", "").strip()
+    category    = request.form.get("category", "").strip()
+    date_val    = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip() or None
+
+    error = None
+    amount = None
+    try:
+        amount = float(amount_raw)
+        if amount <= 0:
+            error = "Amount must be greater than zero"
+    except ValueError:
+        error = "Amount must be a valid number"
+
+    if not error and category not in CATEGORIES:
+        error = "Invalid category selected"
+
+    if not error:
+        if not _DATE_RE.match(date_val):
+            error = "Date must be in YYYY-MM-DD format"
+        else:
+            try:
+                parsed = datetime.strptime(date_val, "%Y-%m-%d").date()
+                if parsed > date.today():
+                    error = "Date cannot be in the future"
+            except ValueError:
+                error = "Date must be in YYYY-MM-DD format"
+
+    if error:
+        return render_template(
+            "edit_expense.html",
+            categories=CATEGORIES,
+            error=error,
+            form={"amount": amount_raw, "category": category,
+                  "date": date_val, "description": description or ""},
+        )
+
+    update_expense(id, user_id, amount, category, date_val, description)
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/delete")
